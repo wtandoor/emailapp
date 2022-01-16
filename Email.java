@@ -6,30 +6,50 @@ public class Email {
     private String lastName;
     private String password;
     private String department;
-    // private int mailboxCapacity;
     private int passlen = 16;
     private int sizeFirstLastName = 8;
     private String alternateEmail;
+    private String resultEmail;
 
     // Конструктор для получения имени и фамилии
     public Email() {
         this.firstName = firstNameBuilder(sizeFirstLastName);
         this.lastName = lastNameBuilder(sizeFirstLastName);
-        System.out.println("NEW EMAIL:" + this.firstName + " " + this.lastName);
-        // Вызов метода, который будет запрашивать информациб о отделе
         this.department = setDepartment();
-        System.out.println("Department:" + this.department);
-        // Получение или генерация пароля для пользователя
         this.password = randPassw(passlen);
         this.alternateEmail = alternateSetEmail();
+        this.resultEmail = buildEmailAdress(this.firstName, this.lastName, this.password, this.sizeFirstLastName);
+        System.out.println(this.resultEmail);
         System.out.println(this.password);
+    }
+
+    private String buildEmailAdress(String firstName, String lastName, String password, int size) {
+        char [] resultEmail = new char[size * 2 + 10];
+        String domen = "@gmail.com";
+        int i;
+        int k;
+
+        i = 0;
+        k = 0;
+        while (i < size) {
+            resultEmail[i] = firstName.charAt(i);
+            i++;
+        }
+        while (i < size * 2) {
+            resultEmail[i] = lastName.charAt(k++);
+            i++;
+        }
+        k = 0;
+        while (i < size * 2 + 10) {
+            resultEmail[i++] = domen.charAt(k++);
+        }
         
+        return (new String(resultEmail));
     }
 
     private String alternateSetEmail(){
         return (new String("rborisov989@gmail.com"));
     }
-    // генератор имени
     private String firstNameBuilder(int leng){
         String validCharacters = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ";
         char [] firstName = new char[leng];
@@ -62,8 +82,6 @@ public class Email {
     private String setDepartment() {
         int depChoice;
         System.out.println("Enter the department: \npress 1 if email needed for Department of sales \npress 2 if email needed for Department of Developing \npress 3 if email needed for Department of Accounting \npress 0 if email needed for other Departments");
-        // Scanner number = new Scanner(System.in);
-        // depChoice = number.nextInt();
         while (true) {
             Scanner number = new Scanner(System.in);
             depChoice = number.nextInt();
@@ -80,8 +98,8 @@ public class Email {
                 return ("other departments");
             }
         }
-        // return ("fail");
     }
+
     // generating random password
     private String randPassw(int len) {
         String validCharacters = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%";
@@ -99,6 +117,7 @@ public class Email {
         }
         return (new String(password));
     }
+
     // validation email password
     private int checkPass(char [] password, int passSize){
         int i;
